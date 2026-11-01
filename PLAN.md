@@ -171,7 +171,7 @@ Papers differ by factors of 2, depending on whether they describe the long-time-
 
 ### 6. Time reversal (predictions, not yet tested)
 
-- Classical: roundoff ($\epsilon \sim 10^{-16}$ to $10^{-15}$) grows like $e^{\lambda n}$, with $\lambda \approx \ln(K/2) \approx 0.92$ at $K = 5$. The return should fail once the forward run is longer than about $\ln(1/\epsilon)/\lambda \approx 35$ to 40 kicks.
+- Classical: roundoff ($\epsilon \sim 10^{-16}$ to $10^{-15}$) grows like $e^{\lambda n}$, with $\lambda \approx \ln(K/2) \approx 0.92$ at $K = 5$. The return should fail once the forward run is longer than about $\ln(1/\epsilon)/\lambda \approx 35$ to 40 kicks. (Step 1 measured $\lambda = 0.98$ at $K = 5$, the median finite-time exponent of the chaotic orbits in experiment 01, which narrows this to about 35 to 38 kicks.)
 - Quantum: the evolution is linear and unitary, so roundoff never grows exponentially, and the return overlap should stay close to machine precision.
 - A good point for the report: the classical phase-space density (Liouville evolution) is also linear and reversible. The irreversibility comes from following individual chaotic trajectories, whose errors grow exponentially.
 

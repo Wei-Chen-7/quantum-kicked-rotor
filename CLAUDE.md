@@ -53,7 +53,7 @@ slides/         Beamer deck
 ## Status
 
 - [x] Planning, 2026-11-01 (claude.ai chat): brief, decisions and verified notes in `PLAN.md`
-- [ ] Step 1: classical code (demo: experiment 01)
+- [x] Step 1: classical code (demo: experiment 01), 2026-11-01
 - [ ] Step 2: quantum code
 - [ ] Step 3: validation tests (figures: experiments 05 and 06)
 - [ ] Step 4: physics experiments 02, 03, 04 and animations (07 only if time allows)
