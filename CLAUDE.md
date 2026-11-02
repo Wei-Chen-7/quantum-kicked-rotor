@@ -56,7 +56,7 @@ slides/         Beamer deck
 - [x] Step 1: classical code (demo: experiment 01), 2026-11-01
 - [x] Step 2: quantum code (demo: `python -m kicked_rotor.quantum`), 2026-11-02
 - [x] Step 3: validation tests (figures: experiments 05 and 06), 2026-11-02
-- [ ] Step 4: physics experiments 02, 03, 04 and animations (07 only if time allows)
+- [x] Step 4: physics experiments 02, 03, 04 and the animation (GIF from experiment 04), 2026-11-02; 07 not built (only if time allows)
 - [ ] Step 5: LaTeX report and Beamer deck
 
 Update this list at the end of each step.

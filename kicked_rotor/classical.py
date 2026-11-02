@@ -160,6 +160,21 @@ def initial_ensemble(n_particles, p0=0.0, sampling="random", rng=None):
     return theta, p
 
 
+def torus_ensemble(n_particles, rng):
+    """Points spread uniformly over the torus: theta and p both uniform on [0, 2 pi).
+
+    The uniform measure on the torus is invariant under the map, so averages
+    over this ensemble have no start-up transient. That makes it the natural
+    ensemble for measuring the diffusion rate D = <(p_n - p_0)^2> / n. (Points
+    that land in islands of regular motion stay there and do not diffuse.)
+    ``rng`` must be a seed (int) or a ``numpy.random.Generator``.
+    """
+    if rng is None:
+        raise ValueError("torus_ensemble needs rng=<seed or Generator> so runs are reproducible")
+    rng = np.random.default_rng(rng)
+    return rng.uniform(0.0, TWO_PI, n_particles), rng.uniform(0.0, TWO_PI, n_particles)
+
+
 def exact_p2_two_kicks(K):
     """Exact <p^2> after two kicks for the ensemble p0 = 0, theta0 uniform.
 

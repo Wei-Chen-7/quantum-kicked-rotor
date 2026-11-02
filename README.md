@@ -57,5 +57,8 @@ On macOS or Linux, use `python3 -m venv .venv` and `.venv/bin/python` in place o
 | Script | What it shows |
 |---|---|
 | `experiments/01_classical_phase_portraits.py` | Phase portraits of the classical standard map for $K = 0.5, 0.97, 2, 5$, with chaotic and regular orbits told apart by their Lyapunov exponent |
+| `experiments/02_classical_diffusion.py` | Classical diffusion: $\langle p^2\rangle$ grows like $Dn$; $D$ against $K$ from 4.5 to 30 compared with the Bessel-function formulas, with the accelerator-mode windows marked; the lag correlations behind the remaining misses (about 30 s) |
+| `experiments/03_quantum_vs_classical.py` | The main result: the quantum $\langle p^2\rangle$ follows the classical growth, then stops, for $\hbar = 0.25, 0.5, 1$; break times, and the curves rescaled with $\xi = D/\hbar^2$ |
+| `experiments/04_momentum_distribution.py` | The localized momentum distribution on a log scale against the classical Gaussian, with fitted localization lengths compared with $D/\hbar^2$. Also saves the animation `figures/04_momentum_distribution.gif` (about 50 s) |
 | `experiments/05_resonance_test.py` | Validation check 2 as a figure: quadratic energy growth at the quantum resonance $\hbar = 4\pi$, with the Bessel-function momentum distribution, and the exact return every two kicks at the antiresonance $\hbar = 2\pi$ |
 | `experiments/06_time_reversal.py` | Validation check 5 as a figure: run forward, then backward; the classical return is lost after about 37 kicks, while the quantum state comes back to roundoff level |

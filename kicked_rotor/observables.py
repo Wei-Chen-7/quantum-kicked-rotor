@@ -74,3 +74,27 @@ def fit_localization_length(m, prob, m_min, m_max):
     if slope >= 0:
         raise ValueError("the distribution does not decay in the fit window")
     return -2.0 / slope, float(np.exp(intercept))
+
+
+def fit_averaged_localization_length(m, prob, m_min, m_max):
+    """Fit prob_m = A (1 + 2|m|/xi) exp(-2|m|/xi) for m_min <= |m| <= m_max; return ``(xi, A)``.
+
+    This is the shape Izrailev (1990, Eq. 2.3.13) derives for the time-averaged
+    distribution of a state started at m = 0, built from exponentially
+    localized eigenstates with random fluctuations. For a normalized
+    distribution of this shape A = 1/(2 xi) and <m^2> = xi^2. The fit is a
+    least-squares fit of ln(prob), using both signs of m.
+    """
+    from scipy.optimize import curve_fit
+
+    m = np.asarray(m)
+    prob = np.asarray(prob, dtype=float)
+    size = np.abs(m).astype(float)
+    window = (size >= m_min) & (size <= m_max) & (prob > 0)
+
+    def log_model(x, xi, log_a):
+        return log_a - 2 * x / xi + np.log1p(2 * x / xi)
+
+    xi_start, a_start = fit_localization_length(m, prob, m_min, m_max)
+    (xi, log_a), _ = curve_fit(log_model, size[window], np.log(prob[window]), p0=(xi_start, np.log(a_start)))
+    return float(xi), float(np.exp(log_a))
