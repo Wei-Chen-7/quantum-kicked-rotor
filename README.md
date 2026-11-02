@@ -6,32 +6,35 @@ Work in progress. The plan is in [PLAN.md](PLAN.md).
 
 ## How to run
 
-Keep the clone outside Box (Box syncing and `.git` don't mix). Run every command from the repo root.
+Keep the clone outside Box (Box syncing and `.git` don't mix).
 
-### One-time setup (Windows, Anaconda Prompt)
+### One-time setup (Windows PowerShell)
 
-Make a separate conda environment for the project. The first command takes Python from the free conda-forge channel only; pip then installs the packages listed in `requirements.txt`. Replace `C:\path\to\quantum-kicked-rotor` with the folder of your clone.
+Clone the repo, make a virtual environment in a `.venv` folder inside it, and install the packages from `requirements.txt` into that environment:
 
-```bat
-conda create -n kicked-rotor --override-channels -c conda-forge python=3.13 pip
-conda activate kicked-rotor
-cd /d C:\path\to\quantum-kicked-rotor
-python -m pip install -r requirements.txt
+```powershell
+git clone https://github.com/Wei-Chen-7/quantum-kicked-rotor.git
+cd quantum-kicked-rotor
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.txt
 ```
 
-### Each session
+Until the code is merged into `main`, also check out the work branch after cloning, for example `git checkout claude/wonderful-allen-wl1uau`.
 
-```bat
-conda activate kicked-rotor
-cd /d C:\path\to\quantum-kicked-rotor
-python experiments\01_classical_phase_portraits.py
+### Running an experiment
+
+From the folder of your clone:
+
+```powershell
+git pull
+.\.venv\Scripts\python experiments\01_classical_phase_portraits.py
 ```
 
-Each experiment prints a short summary and saves its figures to `figures/` as PNG and PDF. Add `--show` to also open the figures in a window.
+`.\.venv\Scripts\python` is the project's own Python, so there is nothing to activate. Each experiment prints a short summary and saves its figures to `figures/` as PNG and PDF. Add `--show` to also open the figures in a window.
 
-The same environment works in VS Code: open the folder, run **Python: Select Interpreter** from the Command Palette, pick `kicked-rotor`, and use the same `python` commands in a new terminal.
+In VS Code, open the clone's folder and choose the `.venv` interpreter (Command Palette, **Python: Select Interpreter**).
 
-On other systems, `python -m pip install -r requirements.txt` followed by `python experiments/01_classical_phase_portraits.py` does the same.
+On macOS or Linux, use `python3 -m venv .venv` and `.venv/bin/python` in place of `.\.venv\Scripts\python`.
 
 ## Experiments
 

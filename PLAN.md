@@ -6,7 +6,7 @@ Final project for PHY-315 (Quantum Mechanics). This file is the full spec. `CLAU
 
 - Write-up: a full LaTeX report, plus a Beamer deck built from it. (This fills the "[format]" blank in the original brief.)
 - The code lives in this repo and is built in Claude Code cloud sessions. Wei runs it on Windows from a local clone.
-- Python on Windows (decided 2026-11-01): Wei has Anaconda Prompt, VS Code and PowerShell, and left the choice to Claude. Run instructions use Anaconda Prompt with a conda environment named `kicked-rotor` (Python 3.13 from conda-forge, packages from `requirements.txt` via pip). The README has the commands; the same environment works in VS Code.
+- Python on Windows (decided 2026-11-01, revised 2026-11-02): Wei left the choice to Claude. He works in PowerShell, where `git` and `python` work but `conda` is not on the PATH, so the run instructions use a virtual environment in `.venv` inside the clone (`python -m venv .venv`). Commands call `.\.venv\Scripts\python` directly, so nothing needs activating and no PowerShell execution-policy change is needed. The README has the commands; VS Code can use the same `.venv`.
 - The brief's opening step (ask for blanks, then give a one-paragraph summary) already happened in the planning chat. Start directly with Step 1.
 - Proposed step map (Wei can change it):
   1. Classical code: `kicked_rotor/classical.py` (map, inverse map, ensembles, phase-portrait data, Lyapunov exponent) and the plotting helpers it needs. Demo: experiment 01.
