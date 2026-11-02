@@ -210,7 +210,8 @@ def print_summary(growth, scan_K, D_ratio, D_ratio_err, lags, paths, elapsed):
           f" {np.sqrt(np.mean(resid[clear] ** 2)):.3f} rms;")
     print("  larger than 4 errors at K = " + (", ".join(f"{K:g} ({r:+.3f})" for K, r in zip(scan_K[big], resid[big]))
                                               or "none"))
-    print("  (these are real misses of the formula, not noise; panel (c) shows where they come from)")
+    print("  (misses this large are very unlikely to be noise; panel (c) shows where they come from. Several sit")
+    print("  near the 4-error line, so this list can change from run to run and from computer to computer)")
     near = accelerator_window(scan_K, margin=1.2) & ~accelerator_window(scan_K)
     print(f"  just outside the windows D is enhanced: largest D/(K^2/2) there = {D_ratio[near].max():.2f}"
           f" at K = {scan_K[near][np.argmax(D_ratio[near])]:g}")

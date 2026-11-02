@@ -40,6 +40,16 @@ A quick demo of the quantum code prints the norm and $\langle p^2\rangle$ for th
 
 Options such as `--hbar 0.25 --kicks 20` change the parameters (`--help` lists them).
 
+### Small differences between computers
+
+The quantum numbers come out the same on every computer, to all printed digits. The classical ones differ slightly. Two computers can round the sine of a number differently in the last bit, and chaos multiplies such a difference by about $e^{\lambda}$ per kick ($\lambda \approx 1$ at $K = 5$). After about 37 kicks every orbit is different, which is the effect experiment 06 shows. Ensemble averages then agree only within their printed error bars.
+
+So running an experiment rewrites the figure files with slightly different versions. The report uses the committed ones; to get them back (do this before `git pull`):
+
+```powershell
+git restore figures
+```
+
 ### Validation tests
 
 ```powershell
