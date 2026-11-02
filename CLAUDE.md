@@ -54,7 +54,7 @@ slides/         Beamer deck
 
 - [x] Planning, 2026-11-01 (claude.ai chat): brief, decisions and verified notes in `PLAN.md`
 - [x] Step 1: classical code (demo: experiment 01), 2026-11-01
-- [ ] Step 2: quantum code
+- [x] Step 2: quantum code (demo: `python -m kicked_rotor.quantum`), 2026-11-02
 - [ ] Step 3: validation tests (figures: experiments 05 and 06)
 - [ ] Step 4: physics experiments 02, 03, 04 and animations (07 only if time allows)
 - [ ] Step 5: LaTeX report and Beamer deck

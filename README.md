@@ -32,6 +32,14 @@ git pull
 
 `.\.venv\Scripts\python` is the project's own Python, so there is nothing to activate. Each experiment prints a short summary and saves its figures to `figures/` as PNG and PDF. Add `--show` to also open the figures in a window.
 
+A quick demo of the quantum code prints the norm and $\langle p^2\rangle$ for the first few kicks, next to the exact values after one and two kicks:
+
+```powershell
+.\.venv\Scripts\python -m kicked_rotor.quantum
+```
+
+Options such as `--hbar 0.25 --kicks 20` change the parameters (`--help` lists them).
+
 In VS Code, open the clone's folder and choose the `.venv` interpreter (Command Palette, **Python: Select Interpreter**).
 
 On macOS or Linux, use `python3 -m venv .venv` and `.venv/bin/python` in place of `.\.venv\Scripts\python`.

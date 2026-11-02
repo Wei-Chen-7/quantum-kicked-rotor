@@ -133,7 +133,16 @@ So quantum and classical agree exactly only at $n = 1$. At $n = 2$ they differ a
 |---|---|---|---|---|---|
 | gap | -0.05% | -0.18% | -1.03% | -2.77% | +5.5% |
 
-How to use this in check 3: test each code against its own exact formula (quantum to machine precision, classical to its statistical error). For the next few kicks, compare quantum and classical with a tolerance built from the ensemble's standard error plus the expected size of the $O(\hbar^2)$ gap, or run that comparison at a small $\hbar$ such as 0.05. Don't pick a percentage by eye.
+How to use this in check 3: test each code against its own exact formula (quantum to machine precision, classical to its statistical error). Beyond $n = 2$, read the next paragraph before comparing quantum with classical. Don't pick a percentage by eye.
+
+**Step 2 finding (2026-11-02): after $n = 2$ the gap grows very fast.** Gap (quantum minus classical, relative) at $K = 5$, with the classical values from the midpoint grid (converged to all digits: $\langle p^2\rangle_3 = 32.25286$, $\langle p^2\rangle_4 = 40.07047$). The quantum value at $n = 3$, $\hbar = 0.05$ was confirmed to 13 digits by an independent Bessel-matrix evolution, so this is physics, not a bug:
+
+| $\hbar$ | 0.5 | 0.25 | 0.1 | 0.05 | 0.02 | 0.01 | 0.005 |
+|---|---|---|---|---|---|---|---|
+| gap at $n = 3$ | +0.5% | -6.4% | -10.8% | -6.3% | -1.4% | -0.35% | -0.09% |
+| gap at $n = 4$ | +49% | +29% | +6.6% | +15% | +14% | +11% | -1.4% |
+
+The gap does vanish like $\hbar^2$ once $\hbar$ is small enough, but the $\hbar^2$ coefficient grows very fast with $n$: about $-0.2$ at $n = 2$, $-35$ at $n = 3$, and roughly $-550$ at $n = 4$. So at $\hbar = 0.05$ the $n = 3$ gap is already 6%, and the earlier suggestion to compare at $\hbar = 0.05$ fails. Izrailev (1990), pp. 313 to 314, gives the reason: full quantum-classical correspondence lasts only up to the Ehrenfest time $t_E \sim \ln(1/\hbar)$ (his Eq. 2.2.20), a few kicks, and for $t_E \lesssim t \lesssim t_D$ "only rough statistical properties like diffusion remain." Options for check 3 beyond $n = 2$ (decide with Wei): compare at very small $\hbar$ (about 0.005 for $n = 3$) with a tolerance from the measured $\hbar^2$ scaling, or compare the average growth rate over many kicks instead of kick-by-kick values.
 
 ### 2. Resonance and antiresonance
 
@@ -144,36 +153,46 @@ How to use this in check 3: test each code against its own exact formula (quantu
 
 Let $C_j = \langle\sin\theta_0\sin\theta_j\rangle$, averaged over the uniform (invariant) measure on the torus. Then $D = \lim_{n\to\infty}\langle(p_n-p_0)^2\rangle/n = K^2\bigl[C_0 + 2\sum_{j\ge1}C_j\bigr]$. Derived in planning: $C_0 = \tfrac12$, $C_1 = 0$, $C_2 = -\tfrac12 J_2(K)$, $C_3 = \tfrac12\bigl[J_3^2(K) - J_1^2(K)\bigr]$. Measured at $K = 5$: $C_2 = -0.0229$ (predicted $-0.0233$) and $C_3 = 0.0139$ (predicted $0.0129$).
 
-These terms give the familiar corrected form
+These terms give a corrected $D$, but the sources keep different terms (checked 2026-11-02):
 
-$$D \approx \frac{K^2}{2}\left[1 - 2J_2(K) - 2J_1^2(K) + 2J_2^2(K) + 2J_3^2(K)\right],$$
+- **Rechester and White (1980), Eq. (20)** (read). With their small added diffusion $\sigma \to 0$ and converted to our $D = \langle(\Delta p)^2\rangle/n$: $D = \frac{K^2}{2}\left[1 - 2J_2 - 2J_1^2 + 2J_3^2\right]$. Their own $D$ is $\langle(\Delta v)^2\rangle/(2T)$ (their Eq. 15), half of ours, so the printed form is $D = \tfrac12\epsilon^2\left[\tfrac12 - J_2(\epsilon)e^{-\sigma} - J_1^2(\epsilon)e^{-\sigma} + J_3^2(\epsilon)e^{-3\sigma}\right]$. This equals $K^2[C_0 + 2C_2 + 2C_3]$ from the correlations above.
+- **Izrailev (1990), Eq. (2.1.9)** (read): $D = \frac{K^2}{2}\{1 - 2J_2(K)[1 - J_2(K)]\}$ for $K \gtrsim 4.5$, citing Rechester and White (1980) and Rechester, Rosenbluth and White (1981, not read yet). For $K_c < K < 4.5$ he gives $D \approx 0.30(K - K_c)^3$.
+- **The planning chat's version**, $\frac{K^2}{2}\left[1 - 2J_2 - 2J_1^2 + 2J_2^2 + 2J_3^2\right]$, is in neither paper. It may come from the 1981 paper; don't cite it until its source is found.
 
-recalled from memory as Rechester and White (1980). Verify the exact form and the citation before using it.
+Measured with a uniform torus ensemble ($M = 10^6$, $n = 1000$, statistical error about $\pm0.0014$), against each version:
 
-Measured with a uniform torus ensemble ($M = 10^6$, $n = 1000$, statistical error about $\pm0.0014$):
+| $K$ | measured $D/(K^2/2)$ | Rechester-White 1980 | Izrailev 1990 | planning version | $1 - 2J_2(K)$ |
+|---|---|---|---|---|---|
+| 5 | 0.990 | 0.958 | 0.911 | 0.963 | 0.907 |
+| 10 | 0.648 | 0.494 | 0.620 | 0.623 | 0.491 |
+| 15 | 0.928 | 0.908 | 0.920 | 0.911 | 0.917 |
+| 22 | 0.821 | 0.727 | 0.772 | 0.762 | 0.737 |
+| 30 | 0.864 | 0.848 | 0.855 | 0.861 | 0.843 |
 
-| $K$ | measured $D/(K^2/2)$ | formula above | $1 - 2J_2(K)$ |
-|---|---|---|---|
-| 5 | 0.990 | 0.963 | 0.907 |
-| 10 | 0.648 | 0.623 | 0.491 |
-| 15 | 0.928 | 0.911 | 0.917 |
-| 22 | 0.821 | 0.762 | 0.737 |
-| 30 | 0.864 | 0.861 | 0.843 |
-
-The truncated formula is an asymptotic expansion. At moderate $K$ the higher correlations aren't small (at $K = 5$, $C_4 \approx 0.021$ and $C_5 \approx -0.035$), so it misses by a few percent. The 7% miss at $K = 22$ isn't understood yet; look into it in experiment 02. With Wei's initial condition $p_0 = 0$, the first kicks are correlated differently (see the $n = 2$ formula), so fit $D$ from the slope at late times.
+The $J_2^2$ term matters most near $K = 10$, where the 1980 formula misses by 24%. Each truncated formula is an asymptotic expansion. At moderate $K$ the higher correlations aren't small (at $K = 5$, $C_4 \approx 0.021$ and $C_5 \approx -0.035$), so it misses by a few percent. The 7% miss at $K = 22$ isn't understood yet; look into it in experiment 02. With Wei's initial condition $p_0 = 0$, the first kicks are correlated differently (see the $n = 2$ formula), so fit $D$ from the slope at late times.
 
 ### 4. Grid size and edge probability
 
 At $K = 5$, $D \approx 0.99\,K^2/2 \approx 12.4$, so $D/\hbar^2 \approx 198$ at $\hbar = 0.25$ and about 50 at $\hbar = 0.5$. If $\xi \approx D/\hbar^2$, then at $\hbar = 0.25$ the tail at the grid edge $|m| = N/2$ is about $e^{-2\cdot2048/198} \approx 10^{-9}$ of the peak for $N = 2^{12}$, which fails a $10^{-10}$ edge test. With $N = 2^{13}$ it's about $10^{-18}$. A thousand kicks at $N = 2^{14}$ take under a second, so be generous with $N$ and let check 4 confirm it. Define "edge probability" precisely in the code and the report (for example, the total probability with $|m| > 3N/8$). Check its maximum over time, not just its final value, because the instantaneous distribution fluctuates around its time average.
 
-### 5. Localization length convention
+### 5. Localization length convention (settled from the papers, 2026-11-02)
 
-Papers differ by factors of 2, depending on whether they describe the long-time-averaged distribution of a packet started at $m = 0$ or individual Floquet eigenstates, and whether they use the decay of $|\psi|$ or $|\psi|^2$. In Wei's convention ($|\psi_m|^2 \sim e^{-2|m|/\xi}$ for the time-averaged packet), the two candidates are $\xi \approx D/\hbar^2$ and $\xi \approx D/(2\hbar^2)$. From memory (unverified): eigenstates localize with a length of about $D/(2\hbar^2)$ in units of $m$, and the averaged packet about twice that. Settle this from the original papers before experiment 04, and state the convention in the report. Fit $\xi$ to a time average over many kicks after saturation, on a log scale, leaving out the central peak.
+Wei's convention: $|\psi_m|^2 \sim e^{-2|m|/\xi}$ for the time-averaged distribution of a packet started at $m = 0$. Here $D$ is the classical momentum diffusion rate $\langle(\Delta p)^2\rangle/n$, including its Bessel oscillations, so $D/\hbar^2$ is the diffusion rate in $m$. (Both papers set $\hbar = 1$ and vary the kick period, $T$ or $\tau$. Their period plays the role of our $\hbar$, their $K = kT$ is our $K$, and their $D_n$ is our $D/\hbar^2$.)
 
-### 6. Time reversal (predictions, not yet tested)
+- **Floquet eigenstates.** Shepelyansky (1986) defines $l$ by the decay of the amplitude, $u_n \propto e^{-|n|/l}$, so $|u_n|^2 \propto e^{-2|n|/l}$, and finds $l = D/(2\hbar^2)$. The factor $\tfrac12$ is exact for the Lloyd model; quantum standard map numerics give $\langle l/D_n\rangle = 0.57$ with rms spread 0.11 for $5 \le k \le 75$, $1.5 \le K \le 29$. Izrailev (1990), Eq. (2.3.9): $l_\infty \approx D_n/2$, accurate to better than 10% in that range.
+- **Time-averaged packet from $m = 0$.** Shepelyansky (1986) writes $\bar f_n \propto e^{-2|n|/l_s}$ and reports $l_s \approx 2l$ (from Chirikov and Shepelyansky's data: $\langle l_s/D_n\rangle = 1.04$ with rms spread 0.20), the difference coming from strong fluctuations of the eigenfunctions. Izrailev (1990), Eqs. (2.3.13) and (2.3.14): $\bar w_n = \frac{1}{2l_s}e^{-2|n|/l_s}\left(1 + 2|n|/l_s\right)$, with $\langle n^2\rangle = l_s^2$ and $l_s \approx 2l_\infty \approx D_n$, checked for $k = 5$ to 120, $\tau \le 1$, $l_s = 9$ to 180.
 
-- Classical: roundoff ($\epsilon \sim 10^{-16}$ to $10^{-15}$) grows like $e^{\lambda n}$, with $\lambda \approx \ln(K/2) \approx 0.92$ at $K = 5$. The return should fail once the forward run is longer than about $\ln(1/\epsilon)/\lambda \approx 35$ to 40 kicks. (Step 1 measured $\lambda = 0.98$ at $K = 5$, the median finite-time exponent of the chaotic orbits in experiment 01, which narrows this to about 35 to 38 kicks.)
-- Quantum: the evolution is linear and unitary, so roundoff never grows exponentially, and the return overlap should stay close to machine precision.
+So in Wei's convention $\xi = l_s \approx D/\hbar^2$: about 198 at $K = 5$, $\hbar = 0.25$ (with $D \approx 12.4$), and about 50 at $\hbar = 0.5$. Eigenstates are localized about twice as tightly. Consequences for experiment 04:
+
+- Fit Izrailev's shape, not a pure exponential. On that shape a pure-exponential fit overestimates $\xi$ by 31% over $\xi/2 \le |m| \le 3\xi$, 21% over $[\xi, 4\xi]$, 13% over $[2\xi, 6\xi]$, and still 7% over $[4\xi, 10\xi]$ (computed 2026-11-02). Fit a time average over many kicks after saturation.
+- $\langle m^2\rangle = \xi^2$ for that shape, so the saturated energy is $\langle p^2\rangle_\infty \approx \hbar^2\xi^2 \approx D^2/\hbar^2$ (Izrailev's Eq. 2.3.15 writes $E_\infty \approx \hbar^2 l_s^2/2$).
+- At larger $\hbar$, Izrailev (p. 321) says the quantum diffusion rate follows Eq. (2.1.9) with $K$ replaced by $K_q = 2k\sin(\tau/2) = (2K/\hbar)\sin(\hbar/2)$, the same $K_q$ as in note 1.
+- Reference curve: Izrailev's Fig. 1 (after Chirikov, Izrailev and Shepelyansky 1981) shows the energy for exactly our case ($K = 5$, $\hbar = 0.25$, start in $m = 0$) over 2000 kicks. Read off the figure, it levels off near $\langle p^2\rangle \approx 1400$, below the $\hbar^2\xi^2 \approx 2500$ from $\xi = D/\hbar^2$; compare in experiment 03.
+
+### 6. Time reversal (predictions; the quantum part checked in Step 2)
+
+- Classical: roundoff ($\epsilon \sim 10^{-16}$ to $10^{-15}$) grows like $e^{\lambda n}$, with $\lambda \approx \ln(K/2) \approx 0.92$ at $K = 5$. The return should fail once the forward run is longer than about $\ln(1/\epsilon)/\lambda \approx 35$ to 40 kicks. (Step 1 measured $\lambda = 0.98$ at $K = 5$, the median finite-time exponent of the chaotic orbits in experiment 01, which narrows this to about 35 to 38 kicks.) Izrailev (1990), p. 315, citing Shepelyansky, Physica D 8, 208 (1983) and Chirikov, Izrailev and Shepelyansky, Physica D 33, 77 (1988), reports that at $K = 5$ with roundoff around $10^{-12}$ the classical map retraces its path for only about 10 kicks, shorter than $\ln(10^{12})/0.98 \approx 28$; find out why in experiment 06.
+- Quantum: the evolution is linear and unitary, so roundoff never grows exponentially, and the return overlap should stay close to machine precision. Step 2 check: $K = 5$, $\hbar = 0.25$, $N = 2^{14}$, 1000 kicks forward and 1000 back returned to the initial state within $3\times10^{-15}$ in every component. The norm drifts steadily upward by about $3\times10^{-16}$ per kick ($2.9\times10^{-13}$ after 1000 kicks), so the fidelity came out $1 + 6\times10^{-13}$; compare states directly or normalize first.
 - A good point for the report: the classical phase-space density (Liouville evolution) is also linear and reversible. The irreversibility comes from following individual chaotic trajectories, whose errors grow exponentially.
 
 ### 7. Accelerator modes
@@ -184,17 +203,24 @@ Stable accelerator modes exist for $2\pi l \le K \le \sqrt{(2\pi l)^2 + 16}$: ab
 
 The kick, FFT, free phase, inverse FFT sequence looks like split-step Fourier, but here it's exact. In the write-up, cover it in one short paragraph as a tool, and put the weight on chaos, Floquet theory and localization.
 
-## References to verify
+## References
 
-All of these are from memory, and none has been checked yet. Verify each one before citing it.
+Status as of 2026-11-02. "Read" means the paper itself was read (Wei supplied PDFs of the three marked "read"; they are not in the repo). "Listed" means only reference lists or a bibliographic record were checked, which confirms where the paper is but not what it says. Verify the rest before citing.
 
-- G. Casati, B. V. Chirikov, F. M. Izrailev, J. Ford, "Stochastic behavior of a quantum pendulum under a periodic perturbation," in *Stochastic Behavior in Classical and Quantum Hamiltonian Systems*, Lecture Notes in Physics 93 (Springer, 1979), p. 334.
-- S. Fishman, D. R. Grempel, R. E. Prange, "Chaos, quantum recurrences, and Anderson localization," Phys. Rev. Lett. 49, 509 (1982).
-- F. L. Moore, J. C. Robinson, C. F. Bharucha, B. Sundaram, M. G. Raizen, "Atom optics realization of the quantum delta-kicked rotor," Phys. Rev. Lett. 75, 4598 (1995).
-- Classical background: B. V. Chirikov, Phys. Rep. 52, 263 (1979); J. M. Greene, J. Math. Phys. 20, 1183 (1979), for the critical $K_c \approx 0.9716$; A. B. Rechester and R. B. White, Phys. Rev. Lett. 44, 1586 (1980), for the Bessel corrections.
-- Localization length and resonances: D. L. Shepelyansky, Phys. Rev. Lett. 56, 677 (1986); F. M. Izrailev, Phys. Rep. 196, 299 (1990); F. M. Izrailev and D. L. Shepelyansky, Theor. Math. Phys. 43, 553 (1980).
+- G. Casati, B. V. Chirikov, F. M. Izrailev, J. Ford, "Stochastic behavior of a quantum pendulum under a periodic perturbation," in *Stochastic Behavior in Classical and Quantum Hamiltonian Systems*, edited by G. Casati and J. Ford, Lecture Notes in Physics 93 (Springer, Berlin, 1979), pp. 334-352. Listed: Springer's record (DOI 10.1007/BFb0021757) gives this author order, with the name spelled "Izraelev". The reference lists in Shepelyansky (1986) and Izrailev (1990) put Ford before Izrailev, so check the chapter's title page before citing.
+- S. Fishman, D. R. Grempel, R. E. Prange, "Chaos, quantum recurrences, and Anderson localization," Phys. Rev. Lett. 49, 509 (1982). Listed: APS issue listing, DOI 10.1103/PhysRevLett.49.509. (Izrailev's list misprints the page as 508.)
+- F. L. Moore, J. C. Robinson, C. F. Bharucha, B. Sundaram, M. G. Raizen, "Atom optics realization of the quantum delta-kicked rotor," Phys. Rev. Lett. 75, 4598 (1995). Not checked yet.
+- B. V. Chirikov, Phys. Rep. 52, 263 (1979). Listed by Rechester and White (1980) and Izrailev (1990). (Shepelyansky's 1986 list misprints the page as 623.)
+- J. M. Greene, J. Math. Phys. 20, 1183 (1979), for the critical $K_c \approx 0.9716$. Listed by Rechester and White (1980) and Izrailev (1990, as "Green, G."). The value $K_{cr} = 0.971635$ also appears in Shepelyansky (1986), Fig. 5 caption.
+- A. B. Rechester and R. B. White, "Calculation of turbulent diffusion for the Chirikov-Taylor model," Phys. Rev. Lett. 44, 1586 (1980). Read; see note 3.
+- A. B. Rechester, M. N. Rosenbluth, R. B. White, Phys. Rev. A 23, 2664 (1981). Listed by Izrailev (1990). Probably the source of the $J_2^2$ term in note 3.
+- D. L. Shepelyansky, "Localization of quasienergy eigenfunctions in action space," Phys. Rev. Lett. 56, 677 (1986). Read; see note 5.
+- F. M. Izrailev, "Simple models of quantum chaos: spectrum and eigenfunctions," Phys. Rep. 196, 299 (1990). Read pp. 299 to 301 and 304 to 322, and the reference list (pp. 388 to 392); see notes 1, 3, 5 and 6.
+- F. M. Izrailev and D. L. Shepelyansky, Theor. Math. Phys. 43, 553 (1980) [Teor. Mat. Fiz. 43, 417 (1980)]. Listed by Izrailev (1990).
 
 ## Open questions for Wei
 
 - Should the $\hbar = 2\pi$ antiresonance be added to check 2?
+- Check 3 beyond $n = 2$: compare at very small $\hbar$, or compare average growth rates (note 1)?
+- Papers still wanted: Rechester, Rosenbluth and White (1981) before experiment 02; for the write-up, the Casati et al. (1979) chapter, Fishman, Grempel and Prange (1982), Moore et al. (1995), Chirikov (1979) and Greene (1979).
 - Report length, slide count or talk length, and the due date (not given yet).
