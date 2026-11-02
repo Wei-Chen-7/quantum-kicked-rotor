@@ -44,6 +44,13 @@ import numpy as np
 
 TWO_PI = 2.0 * np.pi
 
+# Number of momentum states for the physics runs. Validation check 4 chose it:
+# at K = 5 and hbar = 0.25 (the hardest case for hbar in [0.25, 1], since the
+# localization length grows like 1/hbar^2), 1000 kicks keep the probability
+# beyond |m| = 3N/8 below 1e-26, and doubling N changes <p^2> only at roundoff
+# level. 2^13 also passes; 2^12 does not.
+DEFAULT_N = 2**14
+
 
 def angles(N):
     """Angle grid theta_j = 2 pi j / N, for j = 0, ..., N - 1."""
@@ -127,16 +134,26 @@ def iterate(psi, K, hbar, n_kicks, backward=False):
         yield psi
 
 
-def _exact_p2(n, K, hbar):
-    """Exact <p^2> after n = 1 or 2 kicks from m = 0 (PLAN.md note 1); None otherwise."""
+def exact_p2_two_kicks(K, hbar):
+    """Exact <p^2> after two kicks, starting in m = 0 (derived in PLAN.md note 1).
+
+    <p^2>_2 = K^2 [1 + cos(hbar/2) (J0(K_q) - J2(K_q)) - J2(K_2)/2], with
+    K_q = (2K/hbar) sin(hbar/2) and K_2 = (2K/hbar) sin(hbar). After one kick
+    the exact value is simply K^2/2.
+    """
     from scipy.special import jv
 
+    k_q = 2 * K / hbar * np.sin(hbar / 2)
+    k_2 = 2 * K / hbar * np.sin(hbar)
+    return K**2 * (1 + np.cos(hbar / 2) * (jv(0, k_q) - jv(2, k_q)) - 0.5 * jv(2, k_2))
+
+
+def _exact_p2(n, K, hbar):
+    """Exact <p^2> after n = 1 or 2 kicks from m = 0, or None for other n."""
     if n == 1:
         return K**2 / 2
     if n == 2:
-        k_q = 2 * K / hbar * np.sin(hbar / 2)
-        k_2 = 2 * K / hbar * np.sin(hbar)
-        return K**2 * (1 + np.cos(hbar / 2) * (jv(0, k_q) - jv(2, k_q)) - 0.5 * jv(2, k_2))
+        return exact_p2_two_kicks(K, hbar)
     return None
 
 
@@ -145,7 +162,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Demo: the first kicks of the quantum kicked rotor, from m = 0.")
     parser.add_argument("--K", type=float, default=5.0, help="kick strength (default 5)")
     parser.add_argument("--hbar", type=float, default=0.5, help="effective Planck constant (default 0.5)")
-    parser.add_argument("--N", type=int, default=2**14, help="number of momentum states (default 2^14)")
+    parser.add_argument("--N", type=int, default=DEFAULT_N, help="number of momentum states (default 2^14)")
     parser.add_argument("--kicks", type=int, default=10, help="number of kicks (default 10)")
     args = parser.parse_args(argv)
 

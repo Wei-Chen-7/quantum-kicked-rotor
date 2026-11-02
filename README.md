@@ -40,6 +40,14 @@ A quick demo of the quantum code prints the norm and $\langle p^2\rangle$ for th
 
 Options such as `--hbar 0.25 --kicks 20` change the parameters (`--help` lists them).
 
+### Validation tests
+
+```powershell
+.\.venv\Scripts\python -m pytest
+```
+
+This runs the five validation checks from `PLAN.md` (norm, resonance and antiresonance, early times, grid size, time reversal): 39 tests in about 10 seconds. Every tolerance in `tests/` states its reason.
+
 In VS Code, open the clone's folder and choose the `.venv` interpreter (Command Palette, **Python: Select Interpreter**).
 
 On macOS or Linux, use `python3 -m venv .venv` and `.venv/bin/python` in place of `.\.venv\Scripts\python`.
@@ -49,3 +57,5 @@ On macOS or Linux, use `python3 -m venv .venv` and `.venv/bin/python` in place o
 | Script | What it shows |
 |---|---|
 | `experiments/01_classical_phase_portraits.py` | Phase portraits of the classical standard map for $K = 0.5, 0.97, 2, 5$, with chaotic and regular orbits told apart by their Lyapunov exponent |
+| `experiments/05_resonance_test.py` | Validation check 2 as a figure: quadratic energy growth at the quantum resonance $\hbar = 4\pi$, with the Bessel-function momentum distribution, and the exact return every two kicks at the antiresonance $\hbar = 2\pi$ |
+| `experiments/06_time_reversal.py` | Validation check 5 as a figure: run forward, then backward; the classical return is lost after about 37 kicks, while the quantum state comes back to roundoff level |

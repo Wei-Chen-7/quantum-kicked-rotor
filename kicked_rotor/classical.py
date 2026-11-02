@@ -160,6 +160,17 @@ def initial_ensemble(n_particles, p0=0.0, sampling="random", rng=None):
     return theta, p
 
 
+def exact_p2_two_kicks(K):
+    """Exact <p^2> after two kicks for the ensemble p0 = 0, theta0 uniform.
+
+    <p^2>_2 = K^2 [1 + J0(K) - J2(K) - J2(2K)/2] (derived in PLAN.md note 1).
+    After one kick the exact value is simply K^2/2.
+    """
+    from scipy.special import jv
+
+    return K**2 * (1 + jv(0, K) - jv(2, K) - 0.5 * jv(2, 2 * K))
+
+
 def lyapunov_exponent(theta0, p0, K, n_kicks, n_transient=0):
     """Largest Lyapunov exponent of each orbit, measured over a finite run.
 
