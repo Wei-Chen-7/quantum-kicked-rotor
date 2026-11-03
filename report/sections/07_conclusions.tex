@@ -1,0 +1,29 @@
+\section{Conclusions}
+\label{sec:conclusions}
+
+We built a simulation of the classical and quantum kicked rotor, validated it against exact results, and
+used it to follow how a quantum system suppresses chaotic diffusion. The main findings are:
+\begin{itemize}
+  \item For $K$ above $K_c \approx 0.97$ the classical momentum diffuses, with $D/(K^2/2)$ oscillating around 1
+  with period about $2\pi$ in $K$. The Bessel-function expansion reproduces this to an rms miss of 0.04, and
+  where it misses, the cause is visible in the measured correlations of the kick sequence. Islands, in
+  particular the accelerator modes, make the diffusion anomalous or ensemble dependent.
+  \item The quantum energy follows the classical growth at first: exactly after one kick, to order $\hbar^2$
+  after two, in detail up to the Ehrenfest time, and statistically up to a break time $t^* \sim D/\hbar^2$.
+  Then it saturates at about $0.5$ to $0.8$ times $D^2/\hbar^2$ and only fluctuates.
+  \item The time-averaged momentum distribution is exponentially localized, with the shape predicted by
+  Izrailev. Its localization length is $\xi \approx 1.2\,D/\hbar^2$ with a scatter of about 20\% over
+  $0.2 \le \hbar \le 1$, consistent with the $(1.04 \pm 0.20)\,D/\hbar^2$ from earlier work, and it follows the
+  oscillations of the classical $D(K)$.
+  \item Floquet theory explains why the growth stops (a discrete quasienergy spectrum makes the energy
+  quasi-periodic), and the mapping onto the Anderson model explains why the Floquet states are localized.
+  At rational $\hbar/4\pi$ the localization fails, and we reproduced the exact resonance and antiresonance.
+  \item Quantum evolution does not amplify errors, while classical chaos amplifies them exponentially, as the
+  time-reversal experiment and the comparison of two computers both show.
+\end{itemize}
+
+Some observations remain unexplained: the broad bands in $\xi\hbar^2/D$ as $\hbar$ varies, the narrow central
+peak of the time-averaged distribution, and the long-range correlations behind the misses of the diffusion
+formula at a few values of $K$. Each would make a good follow-up. The code is modular, so further numerical
+studies, for example of the statistics of the quasienergies or of how noise destroys localization, can build
+on it directly.

@@ -57,6 +57,6 @@ slides/         Beamer deck
 - [x] Step 2: quantum code (demo: `python -m kicked_rotor.quantum`), 2026-11-02
 - [x] Step 3: validation tests (figures: experiments 05 and 06), 2026-11-02
 - [x] Step 4: physics experiments 02, 03, 04 and the animation (GIF from experiment 04), 2026-11-02; bonus experiment 07 added the same day at Wei's request
-- [ ] Step 5: LaTeX report and Beamer deck
+- [x] Step 5: LaTeX report (`report/report.pdf`, 22 pages) and Beamer deck (`slides/slides.pdf`, 19 + 3 backup slides), 2026-11-03
 
 Update this list at the end of each step.

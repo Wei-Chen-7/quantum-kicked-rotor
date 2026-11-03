@@ -1,0 +1,49 @@
+\section{Introduction}
+\label{sec:intro}
+
+What does quantum mechanics do to a system whose classical motion is chaotic? Chaos in classical mechanics
+means exponential sensitivity to initial conditions: two nearby trajectories separate like $\ee^{\lambda t}$,
+where $\lambda$ is the Lyapunov exponent. Quantum mechanics has no trajectories, and the Schr\"odinger equation
+is linear, so nothing can separate exponentially in that sense. Yet the classical limit must come out right.
+The kicked rotor is the simplest system in which this tension can be studied in full detail, and it is the
+subject of this project.
+
+The kicked rotor is a particle on a ring (a rigid rotor) that receives a sharp kick once per period, with a
+strength that depends on its angle $\theta$:
+\begin{equation}
+  H = \frac{p^2}{2} + K\cos\theta\,\sum_{n=-\infty}^{\infty}\delta(t - n).
+  \label{eq:hamiltonian}
+\end{equation}
+Between kicks the rotor turns freely. Integrating Hamilton's equations over one period gives the Chirikov
+standard map \cite{Chirikov1979}, one of the most studied models of Hamiltonian chaos. For weak kicks most
+orbits are regular and the momentum stays bounded. Above a critical kick strength
+$K_c \approx 0.9716$ \cite{Greene1979} the last barrier across the momentum direction breaks, and for
+$K \gtrsim 5$ almost all orbits are chaotic. The momentum then performs a random walk: averaged over an
+ensemble, $\avg{p^2}$ grows linearly in time, $\avg{p^2} \approx Dn$ after $n$ kicks, with a diffusion rate
+$D \approx K^2/2$ plus corrections that oscillate with $K$ \cite{Chirikov1979,Rechester1980,Rechester1981}.
+
+The quantum rotor behaves very differently. Casati, Chirikov, Izraelev and Ford \cite{Casati1979} solved it
+numerically in 1979. At first the quantum energy grew like the classical one, but after a break time the
+growth slowed down. Later work showed that it stops altogether: the momentum distribution freezes into an
+exponentially localized profile $|\psi_m|^2 \sim \ee^{-2|m|/\xi}$ around its starting point. This is
+\emph{dynamical localization}. Fishman, Grempel and Prange \cite{Fishman1982} explained it by mapping the
+eigenvalue problem of the kicked rotor onto a one-dimensional lattice with pseudo-random on-site energies,
+the Anderson model, in which every eigenstate is exponentially localized. The localization length is set by
+the classical diffusion rate, $\xi \approx D/\hbar^2$ in our units \cite{Shepelyansky1986,Izrailev1990}. The
+effect was observed directly in 1995 with ultracold sodium atoms in a pulsed standing wave of light
+\cite{Moore1995}.
+
+In this project we simulate both the classical and the quantum rotor, check the code against exact results,
+and then use it to study chaos, diffusion and dynamical localization. The main result is
+\cref{fig:quantum_vs_classical}: the quantum energy follows the classical diffusive growth for a few kicks
+and then saturates, at a level and after a time that both scale with $\xi$.
+
+The report is organized as follows. \Cref{sec:model} sets up the model, the quantum one-period
+(Floquet) operator and the numerical method, and summarizes the validation. \Cref{sec:classical} covers the
+classical dynamics: the transition to chaos and the diffusion rate with its Bessel-function corrections.
+\Cref{sec:quantum} is the core: Floquet theory, quantum resonance, the break time, the localized momentum
+distribution and its localization length, how $\xi$ scales with $K$ and $\hbar$, and the Anderson
+analogy. \Cref{sec:correspondence} discusses quantum-classical correspondence and time reversal, and
+\cref{sec:experiments} the cold-atom experiment. The appendices contain the derivations of the classical
+correlations and of the exact two-kick results, details of the validation tests, and instructions for
+reproducing every figure.

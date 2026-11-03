@@ -1,0 +1,85 @@
+\section{Exact results after two kicks}
+\label{app:two_kicks}
+
+Both ensembles start with $p_0 = 0$ and $\theta_0$ uniform (classically), or in $|m = 0\rangle$ (quantum). Then
+$p_2 = K\sin\theta_0 + K\sin\theta_1$, and
+\begin{equation}
+  \avg{p^2}_2 = K^2\bigl[\avg{\sin^2\theta_0} + \avg{\{\sin\theta_0, \sin\theta_1\}} + \avg{\sin^2\theta_1}\bigr],
+  \label{eq:two_kick_parts}
+\end{equation}
+where $\{A, B\} = AB + BA$ (classically just $2AB$).
+
+\paragraph{Classical.}
+Here $\theta_1 = \theta_0 + K\sin\theta_0$. The average of $\cos(n\theta + z\sin\theta)$ over a uniform $\theta$
+is $J_n(-z) = (-1)^n J_n(z)$, by Bessel's integral. So $\avg{\sin^2\theta_0} = \tfrac12$,
+$\avg{\sin^2\theta_1} = \tfrac12\bigl[1 - \avg{\cos(2\theta_0 + 2K\sin\theta_0)}\bigr] = \tfrac12\bigl[1 -
+J_2(2K)\bigr]$, and
+$2\avg{\sin\theta_0\sin\theta_1} = \avg{\cos(\theta_1 - \theta_0)} - \avg{\cos(\theta_1 + \theta_0)} =
+J_0(K) - J_2(K)$. Adding up gives \cref{eq:two_kicks_cl}.
+
+\paragraph{Quantum.}
+We work in the Heisenberg picture, where an operator evolves over one period as
+$\hat A \to \hat U^\dagger\hat A\,\hat U$ with $\hat U = F\,\hat K$, the kick
+$\hat K = \ee^{-ik\cos\theta}$ ($k = K/\hbar$) followed by the free step $F = \ee^{-i\hbar\hat m^2/2}$. The kick
+shifts the momentum, $\hat K^\dagger\hat p\hat K = \hat p + K\sin\theta$, and $F$ commutes with $\hat p$, so
+$p_2 = \hat p + K\sin\theta_0 + K\sin\theta_1$ with $\sin\theta_1 = \hat U^\dagger\sin\theta\,\hat U$. Since
+$\hat p|0\rangle = 0$, the terms with $\hat p$ drop out and \cref{eq:two_kick_parts} holds.
+
+The free step acts on $\ee^{in\theta}$, which raises $m$ by $n$, as
+\begin{equation}
+  F^\dagger\ee^{in\theta}F = \ee^{i\hbar n^2/2}\,\ee^{in\theta}\,T^n, \qquad T = \ee^{i\hbar\hat m},
+\end{equation}
+as one checks on a momentum state. The operator $T$ shifts the angle, $(T\psi)(\theta) = \psi(\theta + \hbar)$,
+and leaves $|0\rangle$ unchanged. Pulling $T^n$ through the kick,
+\begin{equation}
+  \hat U^\dagger\ee^{in\theta}\hat U
+  = \ee^{i\hbar n^2/2}\,\ee^{in\theta}\,\ee^{ik[\cos\theta - \cos(\theta + n\hbar)]}\,T^n
+  = \ee^{i\hbar n^2/2}\,\ee^{in\theta}\,\ee^{iK_n\sin(\theta + n\hbar/2)}\,T^n,
+  \qquad K_n = \frac{2K}{\hbar}\sin\frac{n\hbar}{2}.
+  \label{eq:heisenberg_kick}
+\end{equation}
+The kick seen through one free step is weakened from $K$ to $K_n$: the free rotation by $n\hbar$ in angle
+partly cancels the phase of the kick. For $n = 2$, averaging over the uniform angle of $|0\rangle$ (substitute
+$\varphi = \theta + \hbar$) gives $\avg{\ee^{2i\theta_1}} = J_2(K_2)$ with $K_2 = (2K/\hbar)\sin\hbar$, so
+$\avg{\sin^2\theta_1} = \tfrac12\bigl[1 - J_2(K_2)\bigr]$.
+
+For the cross term we need $\ee^{\pm i\theta_1}$, from \cref{eq:heisenberg_kick} with $n = \pm1$, and we
+must keep track of where $T$ acts. Using $T|0\rangle = |0\rangle$,
+\begin{align}
+  \avg{\sin\theta\,\ee^{i\theta_1}} &= \ee^{i\hbar/2}\avg{\sin\theta\,\ee^{i\theta}\ee^{iK_1\sin(\theta + \hbar/2)}}
+  = \frac{1}{2i}\bigl[\ee^{-i\hbar/2}J_2(K_1) - \ee^{i\hbar/2}J_0(K_1)\bigr],\\
+  \avg{\sin\theta\,\ee^{-i\theta_1}} &= \ee^{-i\hbar/2}\avg{\sin(\theta + \hbar)\,\ee^{-i\theta}\ee^{-iK_1\sin(\theta + \hbar/2)}}
+  = \frac{1}{2i}\bigl[\ee^{i\hbar/2}J_0(K_1) - \ee^{-i\hbar/2}J_2(K_1)\bigr],
+\end{align}
+where each average was done by shifting the angle by $\hbar/2$ and applying the Jacobi-Anger expansion. So
+$\avg{\sin\theta_0\sin\theta_1} = \tfrac12\bigl[\ee^{i\hbar/2}J_0(K_1) - \ee^{-i\hbar/2}J_2(K_1)\bigr]$, and
+since $\{\sin\theta_0, \sin\theta_1\}$ is twice the Hermitian part,
+\begin{equation}
+  \avg{\{\sin\theta_0, \sin\theta_1\}} = 2\,\mathrm{Re}\avg{\sin\theta_0\sin\theta_1}
+  = \cos\frac{\hbar}{2}\bigl[J_0(K_q) - J_2(K_q)\bigr], \qquad K_q = K_1 = \frac{2K}{\hbar}\sin\frac{\hbar}{2}.
+\end{equation}
+Adding the three parts gives \cref{eq:two_kicks_qm}.
+
+\paragraph{Checks and limits.}
+The FFT simulation reproduces \cref{eq:two_kicks_qm} to about $10^{-15}$ (relative) for
+$K \in \{2, 5, 9.5\}$ and $\hbar \in \{0.25, 0.5, 1, 2, 3\}$, and the midpoint grid reproduces
+\cref{eq:two_kicks_cl} to all printed digits with 4096 angles. As $\hbar\to0$, $K_q\to K$ and $K_2\to2K$, giving
+the classical result. At $\hbar = 4\pi$, $K_q = K_2 = 0$ and the formula gives $2K^2$, the resonance value
+$K^2n^2/2$ at $n = 2$; at $\hbar = 2\pi$, $\cos(\hbar/2) = -1$ and it gives 0, the antiresonance.
+\Cref{tab:two_kick_gap} lists the difference between the two at $K = 5$.
+
+\begin{table}[!htbp]
+\centering
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$\hbar$ & 0.05 & 0.1 & 0.25 & 0.5 & 1.0 \\
+\midrule
+$(\avg{p^2}_2^{\rm qm} - \avg{p^2}_2^{\rm cl})/\avg{p^2}_2^{\rm cl}$ & $-0.05\%$ & $-0.18\%$ & $-1.03\%$ & $-2.77\%$ & $+5.5\%$ \\
+\bottomrule
+\end{tabular}
+\caption{Relative quantum-classical difference of $\avg{p^2}$ after two kicks at $K = 5$. At small $\hbar$ it
+is of order $\hbar^2$; at three and four kicks the coefficient of $\hbar^2$ is about 175 and 2700 times
+larger (\cref{sec:early}).}
+\label{tab:two_kick_gap}
+\end{table}

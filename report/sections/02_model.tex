@@ -1,0 +1,124 @@
+\section{Model and method}
+\label{sec:model}
+
+\subsection{The classical kicked rotor and the standard map}
+
+We use scaled units in which the kick period and the moment of inertia are both 1, so the Hamiltonian is
+\cref{eq:hamiltonian}. Hamilton's equations are $\dot\theta = p$ and
+$\dot p = K\sin\theta\,\sum_n\delta(t-n)$. Between kicks the momentum is constant and the angle grows
+linearly. Across a kick the angle is continuous and the momentum jumps by $K\sin\theta$. Writing
+$(\theta_n, p_n)$ for the state just before kick $n$, one period is
+\begin{equation}
+  p_{n+1} = p_n + K\sin\theta_n, \qquad \theta_{n+1} = \theta_n + p_{n+1} \pmod{2\pi}.
+  \label{eq:standard_map}
+\end{equation}
+This is the Chirikov standard map \cite{Chirikov1979}. Its Jacobian determinant is 1, so it preserves
+phase-space area, as any Hamiltonian flow must. Solving for the earlier state gives the inverse map,
+$\theta_n = \theta_{n+1} - p_{n+1}$ and $p_n = p_{n+1} - K\sin\theta_n$, which we use for the time-reversal
+test.
+
+The map is unchanged by $p \to p + 2\pi$, so phase space can be drawn on a torus,
+$\theta, p \in [0, 2\pi)$, and we do that for the phase portraits. In the dynamics, however, the momentum is
+never wrapped, because its unbounded growth is exactly what we want to measure. Small displacements obey the
+linearized map $\delta p' = \delta p + K\cos\theta\,\delta\theta$, $\delta\theta' = \delta\theta + \delta p'$.
+Their average logarithmic growth rate per kick is the Lyapunov exponent $\lambda$, which we compute by
+renormalizing the displacement after every kick.
+
+\subsection{Quantization and the Floquet operator}
+
+Because $\theta$ is an angle, the wave function is periodic, and $\hat p = -i\hbar\,\partial_\theta$ has
+eigenvalues $p = \hbar m$ with integer $m$ and eigenfunctions $\ee^{im\theta}/\sqrt{2\pi}$. Here $\hbar$ is the
+\emph{effective} Planck constant: in scaled units it is the ratio of Planck's constant to the rotor's action
+scale, so it measures how quantum the motion is, and $\hbar\to 0$ is the classical limit.
+
+Integrating the Schr\"odinger equation $i\hbar\,\partial_t\psi = H\psi$ across a kick, the
+$\delta$-function term dominates and the kinetic term contributes nothing, so the kick multiplies the wave
+function by a phase, $\psi(\theta) \to \ee^{-iK\cos\theta/\hbar}\,\psi(\theta)$, exactly. Between kicks the
+rotor is free and each momentum component picks up the phase $\ee^{-i\hbar m^2/2}$. The evolution from just
+before one kick to just before the next is therefore given by the one-period (Floquet) operator
+\begin{equation}
+  \hat U = \ee^{-i\hat p^2/2\hbar}\,\ee^{-iK\cos\hat\theta/\hbar}.
+  \label{eq:floquet}
+\end{equation}
+Its matrix elements in the momentum basis follow from the Jacobi-Anger expansion of the kick,
+\begin{equation}
+  \ee^{-ik\cos\theta} = \sum_r (-i)^r J_r(k)\,\ee^{ir\theta}
+  \quad\Longrightarrow\quad
+  \langle m'|\hat U|m\rangle = \ee^{-i\hbar m'^2/2}\,(-i)^{m'-m}\,J_{m'-m}(K/\hbar).
+  \label{eq:matrix_elements}
+\end{equation}
+Because $J_r(k)$ is tiny for $|r| > k$, one kick couples each momentum state to about $k = K/\hbar$
+neighbors on either side. So the quantum dynamics depends on two numbers: $K$, which sets the classical
+chaos, and $\hbar$, which sets the free phase and, through $k = K/\hbar$, the number of momentum states one
+kick connects.
+
+Expectation values in momentum space are sums, for example $\avg{p^2} = \hbar^2\sum_m m^2|\psi_m|^2$. To
+compare the two theories we start them in matching states: the quantum rotor in the momentum eigenstate
+$m = 0$, which is spread uniformly in angle with zero momentum, and the classical ensemble with $p_0 = 0$ and
+$\theta_0$ uniform on $[0, 2\pi)$. After one kick both give exactly $\avg{p^2} = K^2/2$.
+
+\subsection{Numerical method}
+
+We store $\psi$ at $N$ equally spaced angles $\theta_j = 2\pi j/N$. A discrete Fourier transform, computed
+with the fast Fourier transform (FFT) and normalized to be unitary, gives the momentum amplitudes $\psi_m$ for
+$m = -N/2, \dots, N/2 - 1$. One period is then four steps:
+multiply $\psi(\theta_j)$ by $\ee^{-iK\cos\theta_j/\hbar}$, transform to momentum space, multiply $\psi_m$ by
+$\ee^{-i\hbar m^2/2}$, and transform back. The inverse step undoes these in reverse order with the conjugate
+phases.
+
+This looks like the split-step Fourier method, but it is exact here, with no time-step error. The kick is
+diagonal in $\theta$, the free evolution is diagonal in $m$, and the two act at different times rather than
+simultaneously, so there is nothing to split. The only approximations are the finite momentum range and
+roundoff. The FFT treats momentum as periodic, so probability that reached $|m| = N/2$ would reappear on
+the other side. We therefore track the \emph{edge probability}
+\begin{equation}
+  P_{\rm edge} = \sum_{|m| > 3N/8} |\psi_m|^2
+  \label{eq:edge}
+\end{equation}
+throughout every run and require its largest value to stay below $10^{-10}$. Unless stated otherwise we use
+$N = 2^{14} = 16384$ states, chosen by validation check 4 below. One kick then takes about a millisecond on a
+laptop.
+
+For the classical ensemble matched to the quantum state we place $M$ angles on the midpoint grid
+$\theta_j = 2\pi(j + \tfrac12)/M$ with $p = 0$. Averaging over this grid is the trapezoid rule, which is
+extremely accurate for smooth periodic functions, so early-time averages converge much faster than with random
+sampling. To measure the diffusion rate $D(K)$ we also use a \emph{torus ensemble}, with $\theta$ and $p$ both
+uniform at random (fixed seed). The uniform measure is invariant under the map, so this ensemble has no
+start-up transient.
+
+\subsection{Validation}
+\label{sec:validation}
+
+Before any physics run, the code had to pass five checks, written as 39 automated tests. Every tolerance in
+them has a stated reason: machine precision, the statistical error of an ensemble, or a known physical
+correction. \Cref{tab:validation} summarizes them, and \cref{app:validation} gives the details. As a test of
+the tests, we planted six deliberate bugs (a wrong free phase, a wrong ordering of the momentum grid, a wrong
+classical update, a wrong inverse map, a broken edge probability, and a kick strength off by 0.1\%). Each made
+at least one test fail.
+
+\begin{table}[!htbp]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright}p{0.17\linewidth}>{\raggedright}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}@{}}
+\toprule
+Check & What is tested & Result \\
+\midrule
+1. Norm & $\avg{\psi|\psi} = 1$ over 1000 kicks, forward and backward & drifts by about $3\times10^{-16}$ per kick
+  ($2.9\times10^{-13}$ after 1000), within the FFT roundoff allowance $n\log_2 N\,\varepsilon$ \\
+2. Resonance & $\hbar = 4\pi$: $\avg{p^2} = K^2n^2/2$ and $|\psi_m|^2 = J_m^2(nK/\hbar)$;
+  $\hbar = 2\pi$: exact return every two kicks & largest relative error $2.9\times10^{-13}$ over 1000 kicks;
+  distribution within $1.7\times10^{-15}$; return within $2.8\times10^{-15}$ \\
+3. Early times & exact $\avg{p^2}$ after one and two kicks, quantum and classical; at three kicks the quantum
+  value approaches the classical one like $\hbar^2$ & quantum within $10^{-14}$ of the formulas; classical
+  within the ensemble's error; observed order in $\hbar$: 1.97 \\
+4. Grid & $N = 2^{14}$ against $2^{15}$ at $\hbar = 0.25$, 1000 kicks; edge probability below $10^{-10}$ &
+  edge probability $2.6\times10^{-27}$; doubling $N$ changes $\avg{p^2}$ only at roundoff level; $N = 2^{12}$
+  fails (edge $3.1\times10^{-8}$) \\
+5. Time reversal & $n$ kicks forward, then $n$ back & quantum returns within $2.9\times10^{-13}$ after 1000
+  kicks; the classical return fails after about 38 kicks, as predicted by $\ln(1/\varepsilon)/\lambda$ \\
+\bottomrule
+\end{tabular}
+\caption{The five validation checks ($\varepsilon = 2.2\times10^{-16}$ is the machine precision; $K = 5$
+throughout). Details and the reason for every tolerance are in \cref{app:validation}.}
+\label{tab:validation}
+\end{table}

@@ -2,7 +2,7 @@
 
 Classical and quantum simulations of the kicked rotor, a particle on a ring that gets a sharp kick once per period. With strong kicks, the classical momentum spreads forever like a random walk. The quantum spread follows the classical growth for a while and then stops. This effect, dynamical localization, is the subject of this final project for an undergraduate quantum mechanics course.
 
-Work in progress. The plan is in [PLAN.md](PLAN.md).
+The write-up is in [`report/report.pdf`](report/report.pdf) (22 pages) and the talk in [`slides/slides.pdf`](slides/slides.pdf) (19 slides plus 3 backup slides). The plan and all verified notes are in [PLAN.md](PLAN.md).
 
 ## How to run
 
@@ -73,3 +73,21 @@ On macOS or Linux, use `python3 -m venv .venv` and `.venv/bin/python` in place o
 | `experiments/05_resonance_test.py` | Validation check 2 as a figure: quadratic energy growth at the quantum resonance $\hbar = 4\pi$, with the Bessel-function momentum distribution, and the exact return every two kicks at the antiresonance $\hbar = 2\pi$ |
 | `experiments/06_time_reversal.py` | Validation check 5 as a figure: run forward, then backward; the classical return is lost after about 37 kicks, while the quantum state comes back to roundoff level |
 | `experiments/07_bonus_xi_scaling.py` | Bonus: the localization length against $\hbar$ (41 values from 0.2 to 1 at $K = 5$) and against $K$ (4.5 to 11, medians over five values of $\hbar$), compared with $D/\hbar^2$ (about 3 minutes) |
+
+## Report and slides
+
+Both PDFs are committed, so you can read them without installing TeX.
+
+- `report/report.pdf`: the LaTeX report. Source: `report/report.tex`, with the sections in `report/sections/` and the bibliography in `report/references.bib`. It includes the figures straight from `figures/`.
+- `slides/slides.pdf`: the Beamer deck (16:9). Source: `slides/slides.tex`. The animation on slide 10 plays in Adobe Acrobat Reader; other PDF viewers show its last frame, and `figures/04_momentum_distribution.gif` plays anywhere.
+
+To rebuild them you need a TeX distribution with `latexmk` (on Windows, MiKTeX or TeX Live). From the repo root:
+
+```powershell
+cd report
+latexmk -pdf report.tex
+cd ..\slides
+latexmk -pdf slides.tex
+```
+
+The animation frames in `slides/anim/` are cut from the GIF by `slides/make_animation_frames.py`. Rerunning experiment 04 on another computer changes the GIF slightly (see "Small differences between computers"), so restore the committed figures before rebuilding the slides.
