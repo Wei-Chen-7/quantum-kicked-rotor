@@ -1,0 +1,78 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{txfonts}  % Times text and math (with the AMS symbols), close to the STIX fonts in the figures
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage[capitalise,nameinlink]{cleveref}
+
+\graphicspath{{../figures/}}
+\setlength{\parskip}{0.35em}
+% Let large figures sit near their text (the defaults push them all to the end)
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\arraystretch}{1.15}
+
+\newcommand{\avg}[1]{\langle #1 \rangle}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+
+\title{Dynamical Localization in the Quantum Kicked Rotor}
+\author{Wei Chen\\[0.3em]\small PHY-315 Quantum Mechanics, final project}
+\date{November 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+A rotor kicked once per period is the simplest system in which quantum mechanics changes chaotic motion
+qualitatively. For strong kicks the classical momentum performs a random walk and the energy grows without
+bound. The quantum rotor follows this growth only up to a break time and then stops: its momentum
+distribution freezes into an exponentially localized profile, an effect called dynamical localization. We
+simulate both versions, the classical one with the Chirikov standard map and the quantum one with an exact
+evolution based on the fast Fourier transform, and we check the code against exact results: conservation of
+the norm, quantum resonance and antiresonance, the first two kicks, convergence in the number of momentum
+states, and time reversal. We then measure the classical diffusion rate $D(K)$ and its Bessel-function
+corrections, show the quantum saturation, fit the localization length $\xi$ of the time-averaged momentum
+distribution, and test the prediction $\xi \approx D/\hbar^2$ for $\hbar$ from 0.2 to 1 and for kick strengths
+$K$ from 4.5 to 11. We find $\xi\hbar^2/D \approx 1.2$ with a scatter of about 20\%, consistent with earlier
+work, and $\xi$ follows the oscillations of the classical $D(K)$. Floquet theory and the mapping onto
+Anderson localization explain why the growth stops.
+\end{abstract}
+
+\tableofcontents
+
+\input{sections/01_introduction}
+\input{sections/02_model}
+\input{sections/03_classical}
+\input{sections/04_quantum}
+\input{sections/05_correspondence}
+\input{sections/06_experiments}
+\input{sections/07_conclusions}
+
+\appendix
+\input{sections/A_correlations}
+\input{sections/B_two_kicks}
+\input{sections/C_validation}
+\input{sections/D_code}
+
+% If your course asks you to declare tools you used, add a short acknowledgment here.
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}

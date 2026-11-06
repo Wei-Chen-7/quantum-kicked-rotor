@@ -1,0 +1,57 @@
+\section{Validation details}
+\label{app:validation}
+
+The checks live in \texttt{tests/}, one file per check, and run with \texttt{python -m pytest} (39 tests, about
+10 seconds). Every tolerance has one of three reasons. \emph{Machine precision}: one period does one FFT and one
+inverse FFT, each with a relative rounding error of order $\varepsilon\log_2 N$, and errors from successive
+kicks add at most linearly, so after $n$ kicks we allow $n\log_2 N\,\varepsilon$ (the measured errors are about
+a tenth of this or less). Exact reference formulas use SciPy's Bessel functions, which are accurate to about
+$10^{-15}$, so comparisons with them allow $10^{-14}$. \emph{Statistical error}: random classical ensembles
+must agree within four standard errors, which a correct code fails less than once in $10^4$ runs.
+\emph{Physical correction}: where quantum and classical values differ for a known reason, the test checks
+that reason (the order in $\hbar$, or the Lyapunov time) rather than a percentage chosen by eye. All checks use
+$K = 5$.
+
+\paragraph{Check 1: norm.}
+Over 1000 kicks at $\hbar = 0.25$ on $N = 2^{14}$ states, $\avg{\psi|\psi}$ drifts steadily upward by about
+$3\times10^{-16}$ per kick, reaching $2.9\times10^{-13}$, within the allowance $n\log_2 N\,\varepsilon =
+3.1\times10^{-12}$. The inverse step conserves the norm equally well.
+
+\paragraph{Check 2: resonance and antiresonance.}
+At $\hbar = 4\pi$ the energy is compared with $K^2n^2/2$ after every kick for 1000 kicks (largest relative
+error $2.9\times10^{-13}$), and the distribution after 100 kicks with $J_m^2(nK/\hbar)$ (largest difference
+$1.7\times10^{-15}$). The resonant state spreads to $|m| \approx nK/\hbar$, about 400 states after 1000 kicks,
+well inside the grid. At $\hbar = 2\pi$, over 20 kicks, the odd kicks give $K^2/2$ within a relative
+$2.2\times10^{-15}$ and the even kicks return to $m = 0$ within $2.8\times10^{-15}$.
+
+\paragraph{Check 3: early times.}
+After one kick both codes give $K^2/2$. After two kicks the quantum code matches \cref{eq:two_kicks_qm} to
+$10^{-14}$ for several values of $\hbar$, and the classical code matches \cref{eq:two_kicks_cl} both on the
+midpoint grid (to roundoff) and with random angles (within four standard errors). At three kicks no exact
+formula is available, and the quantum-classical gap is far from small at moderate $\hbar$ (\cref{sec:early}).
+The test therefore checks the correspondence limit itself. Because $\avg{p^2}$ is even in $\hbar$, the quantum
+value behaves as $q(\hbar) = c + a\hbar^2 + b\hbar^4 + \dots$; from $\hbar = 0.02$, 0.01 and 0.005 the observed
+order of convergence is 1.97 (the test asks for 1.8 to 2.2), and the Richardson extrapolation
+$q(0.005) + [q(0.005) - q(0.01)]/3$ lands within $1.2\times10^{-4}$ of the classical
+$\avg{p^2}_3 = 32.25286$, inside its own error estimate of $2.3\times10^{-3}$.
+
+\paragraph{Check 4: grid size.}
+At $\hbar = 0.25$, the smallest value used in experiments 03 and 04, the largest edge probability over 1000
+kicks is $1.5\times10^{-3}$, $3.1\times10^{-8}$, $2.8\times10^{-19}$ and $2.6\times10^{-27}$ for
+$N = 2^{11}$, $2^{12}$, $2^{13}$ and $2^{14}$. With $N = 2^{14}$, doubling the grid changes $\avg{p^2}$ only at
+the level of roundoff. A negative control confirms that the test would catch a grid that is too small:
+$N = 2^{12}$ fails it. Experiment 07, which goes to smaller $\hbar$ and longer runs, enlarges its grid
+automatically by the same criterion.
+
+\paragraph{Check 5: time reversal.}
+The quantum state returns within $2.9\times10^{-13}$ after 1000 kicks forward and 1000 back, against the
+allowance $2n\log_2 N\,\varepsilon$ for $2n$ steps. The classical inverse map undoes one kick to roundoff. For
+4000 chaotic orbits the median return distance first exceeds 1 at a kick between 30 and 45 (it is 38), a
+window around $\ln(1/\varepsilon)/\lambda = 36.7$ that allows for the spread of finite-time Lyapunov exponents.
+
+\paragraph{Testing the tests.}
+We planted six bugs one at a time: a wrong factor in the free phase, the momentum grid in the wrong
+order, a wrong classical update, a wrong inverse map, a broken edge probability, and a kick strength off by
+0.1\%. Each made at least one test fail. One change no test can see: flipping the sign of the kick phase or of
+the free phase changes none of the observables we compute, because it is a symmetry of the problem (it amounts
+to complex conjugation combined with a shift of the angle).

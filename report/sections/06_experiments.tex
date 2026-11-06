@@ -1,0 +1,30 @@
+\section{Dynamical localization in the laboratory}
+\label{sec:experiments}
+
+Moore, Robinson, Bharucha, Sundaram and Raizen realized the quantum kicked rotor with ultracold sodium
+atoms in 1995 \cite{Moore1995}. The atoms move in a standing wave of near-resonant laser light, whose
+intensity pattern acts on them as a potential proportional to $\cos(2k_L x)$, with $k_L$ the wave number of
+the light. Switching the standing wave on in short pulses with period $T$ turns this into a kicked rotor, with
+the angle $\theta = 2k_L x$ and the momentum measured in units of $2\hbar k_L$. The kick strength $\kappa$ plays
+the role of our $K$, and the scaled Planck constant $\bar k = 8\omega_r T$, where $\omega_r$ is the atomic
+recoil frequency, plays the role of our $\hbar$. Because $\bar k$ depends on the pulse period, the experiment
+can tune how quantum the motion is.
+
+In their main run ($\kappa = 11.6$ with a 10\% uncertainty, $\bar k = 2.0$) the momentum spread first grew
+diffusively at the classical rate $\kappa^2/2$ and then stopped after a break time of about 8 kicks. From then
+on the momentum distribution stayed exponentially localized, checked out to 50 kicks. They quote a
+localization length $\xi = \kappa^2/4\bar k^2 \approx 8.3$ in units of $2\hbar k_L$, defined as the $1/e$ point
+of the probability distribution, $P \propto \ee^{-|n|/\xi}$. In our convention, with $|\psi_m|^2 \propto
+\ee^{-2|m|/\xi}$, this is twice as long, $\kappa^2/2\bar k^2 = D/\hbar^2$, exactly the estimate of
+\cref{eq:estimates}.
+
+They also observed quantum resonances, when $\bar k/2$ was a rational multiple of $2\pi$. At odd multiples of
+$\pi$ (our antiresonance, $\hbar = 2\pi$) the first two or three kicks showed the predicted sign flip, with the
+second kick undoing the first. One difference from our idealized model: the atoms start in a Gaussian wave
+packet rather than a single momentum state, so at resonance their distributions stayed narrow instead of
+growing quadratically. For a review of chaos experiments with cold atoms see Saif \cite{Saif2005}.
+
+Dynamical localization is an interference effect between Floquet states, so it needs phase coherence.
+Anything that randomizes the phase of the wave function between kicks, such as the spontaneous emission of a
+photon or noise in the kick strength, would break the interference that stops the growth. In this respect too
+it resembles Anderson localization of electrons, which inelastic scattering destroys.

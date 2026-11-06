@@ -53,10 +53,10 @@ slides/         Beamer deck
 ## Status
 
 - [x] Planning, 2026-11-01 (claude.ai chat): brief, decisions and verified notes in `PLAN.md`
-- [ ] Step 1: classical code (demo: experiment 01)
-- [ ] Step 2: quantum code
-- [ ] Step 3: validation tests (figures: experiments 05 and 06)
-- [ ] Step 4: physics experiments 02, 03, 04 and animations (07 only if time allows)
-- [ ] Step 5: LaTeX report and Beamer deck
+- [x] Step 1: classical code (demo: experiment 01), 2026-11-01
+- [x] Step 2: quantum code (demo: `python -m kicked_rotor.quantum`), 2026-11-02
+- [x] Step 3: validation tests (figures: experiments 05 and 06), 2026-11-02
+- [x] Step 4: physics experiments 02, 03, 04 and the animation (GIF from experiment 04), 2026-11-02; bonus experiment 07 added the same day at Wei's request
+- [x] Step 5: LaTeX report (`report/report.pdf`, 22 pages) and Beamer deck (`slides/slides.pdf`, 19 + 3 backup slides), 2026-11-03
 
 Update this list at the end of each step.

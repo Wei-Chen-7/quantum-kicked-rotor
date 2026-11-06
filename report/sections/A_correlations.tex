@@ -1,0 +1,60 @@
+\section{The classical correlations and the Bessel corrections}
+\label{app:correlations}
+
+\paragraph{Diffusion from correlations.}
+After $n$ kicks, $p_n - p_0 = K\sum_{j=0}^{n-1}\sin\theta_j$. Averaging over the uniform measure on the torus,
+which the map preserves, the correlation $\avg{\sin\theta_i\sin\theta_j}$ depends only on $|i - j|$; call it
+$C_{|i-j|}$. Then
+\begin{equation}
+  \avg{(p_n - p_0)^2} = K^2\sum_{i,j=0}^{n-1} C_{|i-j|} = K^2\Bigl[nC_0 + 2\sum_{j=1}^{n-1}(n - j)\,C_j\Bigr],
+\end{equation}
+and if the $C_j$ decay fast enough, dividing by $n$ and letting $n\to\infty$ gives
+$D = K^2\bigl[C_0 + 2\sum_{j\ge1}C_j\bigr]$, which is \cref{eq:D_correlations}.
+
+\paragraph{Angles as independent variables.}
+Eliminating the momentum from \cref{eq:standard_map} gives the second-order form
+$\theta_{j+1} = 2\theta_j - \theta_{j-1} + K\sin\theta_j$. The change of variables
+$(\theta_0, p_0) \mapsto (\theta_0, \theta_1)$ with $\theta_1 = \theta_0 + p_0 + K\sin\theta_0$ is a shear
+with unit Jacobian, so if $(\theta_0, p_0)$ is uniform on the torus, so is $(\theta_0, \theta_1)$: the first
+two angles are independent and uniform, and all later angles follow from them. Averages of
+$\ee^{i(a\theta_0 + b\theta_1)}$ with integers $a, b$ vanish unless $a = b = 0$. Writing
+\begin{equation}
+  C_j = \tfrac12\,\mathrm{Re}\bigl[\avg{\ee^{i(\theta_0 - \theta_j)}} - \avg{\ee^{i(\theta_0 + \theta_j)}}\bigr]
+\end{equation}
+and expanding with the Jacobi-Anger identity $\ee^{iz\sin\theta} = \sum_l J_l(z)\,\ee^{il\theta}$, each
+correlation reduces to picking out the terms in which all angles cancel.
+
+\paragraph{The first lags.}
+$C_0 = \avg{\sin^2\theta_0} = \tfrac12$. Since $\theta_1$ is independent of $\theta_0$, $C_1 = 0$. For lag 2,
+\begin{equation}
+  \ee^{i\theta_2} = \ee^{-i\theta_0}\,\ee^{2i\theta_1}\,\ee^{iK\sin\theta_1}
+  = \ee^{-i\theta_0}\sum_l J_l(K)\,\ee^{i(2+l)\theta_1}.
+\end{equation}
+In $\avg{\ee^{i(\theta_0 + \theta_2)}}$ the $\theta_0$ dependence cancels and only $l = -2$ survives, giving
+$J_{-2}(K) = J_2(K)$; $\avg{\ee^{i(\theta_0 - \theta_2)}}$ contains $\ee^{2i\theta_0}$ and vanishes. So
+$C_2 = -\tfrac12 J_2(K)$. For lag 3, $\theta_3 = 2\theta_2 - \theta_1 + K\sin\theta_2$, and expanding both
+sines,
+\begin{equation}
+  \ee^{i\theta_3} = \sum_{n,l} J_n(K)\,J_l\bigl((n+2)K\bigr)\,\ee^{-i(n+2)\theta_0}\,\ee^{i(2n+3+l)\theta_1}.
+\end{equation}
+In $\avg{\ee^{i(\theta_0 + \theta_3)}}$ only $n = l = -1$ survives, giving $J_{-1}(K)^2 = J_1^2(K)$. In
+$\avg{\ee^{i(\theta_0 - \theta_3)}}$ only $n = -3$, $l = 3$ survives, giving $J_{-3}(K)\,J_3(-K) = J_3^2(K)$.
+So $C_3 = \tfrac12\bigl[J_3^2(K) - J_1^2(K)\bigr]$. Together,
+\begin{equation}
+  \frac{D}{K^2/2} = 2\bigl[C_0 + 2C_2 + 2C_3\bigr] + \dots = 1 - 2J_2(K) - 2J_1^2(K) + 2J_3^2(K) + \dots,
+\end{equation}
+the formula of Rechester and White \cite{Rechester1980}. Rechester, Rosenbluth and White organized the
+higher orders as paths in Fourier space; the first five terms of their result \cite{Rechester1981} add
+$2J_2^2(K)$, which is \cref{eq:five_term}. Izrailev quotes the simpler form
+$D/(K^2/2) \approx 1 - 2J_2(K)\bigl[1 - J_2(K)\bigr]$ for $K \gtrsim 4.5$ \cite{Izrailev1990}.
+
+\paragraph{Checks.}
+In planning, a torus ensemble gave $C_2 = -0.0229$ and $C_3 = 0.0139$ at $K = 5$ (formulas: $-0.0233$ and
+$0.0129$). In experiment 02, with 400000 orbits and four time origins (statistical error 0.0004), $C_2 =
+-0.0658$ and $C_3 = -0.0024$ at $K = 22$ (formulas: $-0.0657$ and $-0.0025$).
+
+\paragraph{The matched ensemble.}
+For the ensemble $p_0 = 0$ the first two angles are not independent ($\theta_1 = \theta_0 + K\sin\theta_0$),
+so its early correlations differ from the torus averages; \cref{app:two_kicks} computes the first of them.
+The difference dies out after a few kicks, which is why we always measure $D$ from the slope of $\avg{p^2}$ at
+late times.

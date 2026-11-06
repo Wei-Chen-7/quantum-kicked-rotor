@@ -1,0 +1,55 @@
+\section{Code and reproduction}
+\label{app:code}
+
+The code is in the repository \texttt{quantum-kicked-rotor} on GitHub. It uses Python 3 with NumPy, SciPy and
+Matplotlib, and is organized as a small package plus one script per experiment:
+\begin{itemize}
+  \item \texttt{kicked\_rotor/classical.py}: the standard map and its inverse, the matched and torus
+  ensembles, the Lyapunov exponent, and the exact classical two-kick result.
+  \item \texttt{kicked\_rotor/quantum.py}: the momentum grid, the Floquet step and its inverse, and the exact
+  quantum two-kick result.
+  \item \texttt{kicked\_rotor/observables.py}: the norm, momentum distributions, $\avg{p^2}$, the edge
+  probability, and the fits of the localization length.
+  \item \texttt{kicked\_rotor/plotting.py}: shared figure style and saving.
+\end{itemize}
+Every function takes its parameters as arguments, with no hidden global state, so the package can be extended
+for further numerical work.
+
+\begin{table}[!htbp]
+\centering
+\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Script & Figure & Run time \\
+\midrule
+\texttt{01\_classical\_phase\_portraits.py} & \cref{fig:phase_portraits} & 12 s \\
+\texttt{02\_classical\_diffusion.py} & \cref{fig:diffusion} & 27 s \\
+\texttt{03\_quantum\_vs\_classical.py} & \cref{fig:quantum_vs_classical} & 11 s \\
+\texttt{04\_momentum\_distribution.py} & \cref{fig:distribution} and the animation & 50 s \\
+\texttt{05\_resonance\_test.py} & \cref{fig:resonance} & 3 s \\
+\texttt{06\_time\_reversal.py} & \cref{fig:time_reversal} & 6 s \\
+\texttt{07\_bonus\_xi\_scaling.py} & \cref{fig:scaling} & 170 s \\
+\bottomrule
+\end{tabular}
+\caption{The experiments in \texttt{experiments/}. Run times are from a Linux cloud machine; a recent laptop
+is somewhat faster.}
+\label{tab:experiments}
+\end{table}
+
+\paragraph{Running.}
+On Windows, from the folder of a clone, with a virtual environment in \texttt{.venv}:
+\begin{verbatim}
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.txt
+.\.venv\Scripts\python experiments\03_quantum_vs_classical.py
+.\.venv\Scripts\python -m pytest
+\end{verbatim}
+Each experiment prints a short summary and saves its figure to \texttt{figures/} as PNG and PDF. This report
+is built from \texttt{report/} with \texttt{latexmk -pdf report.tex}.
+
+\paragraph{Reproducibility.}
+All random ensembles use fixed seeds, and rerunning any experiment on the same machine reproduces its figures
+byte for byte. Across machines the quantum results agree to all printed digits, while the classical ones agree
+only within their statistical errors, for the reason explained in \cref{sec:correspondence}. Experiment 07
+sizes its runs from the five-term formula for $D$ rather than from the measured value, so that its quantum
+results are machine independent too.
